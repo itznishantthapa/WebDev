@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Boy Throwing Card</title>
+    <style>
+        /* Basic styles for the scene */
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+        }
+
+        .scene {
+            position: relative;
+            width: 300px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Styling the greeting */
+        .greeting {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        /* Styling the boy */
+        .boy {
+            position: absolute;
+            bottom: 0;
+            left: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .body {
+            width: 60px;
+            height: 100px;
+            background-image: url('https://static.vectorcharacters.net/uploads/2013/01/Smart_Boy_Vector_Character_Preview.jpg');
+            background-size: cover;
+            position: relative;
+        }
+
+        .head {
+            width: 60px;
+            height: 60px;
+            background-image: url('https://www.clipartmax.com/png/full/72-723145_boy-cartoon-head-png.png');
+            background-size: cover;
+            position: absolute;
+            top: -60px;
+            left: 0;
+        }
+
+        .arm {
+            width: 60px;
+            height: 10px;
+            background-color: blue;
+            position: absolute;
+            top: 20px;
+            right: -10px;
+            transform-origin: top right;
+            animation: throw 2s forwards;
+            animation-play-state: paused;
+        }
+
+        .leg {
+            width: 10px;
+            height: 50px;
+            background-color: blue;
+            position: absolute;
+            bottom: -50px;
+            left: 20px;
+        }
+
+        /* Styling the card */
+        .card {
+            width: 20px;
+            height: 30px;
+            background-color: red;
+            position: absolute;
+            bottom: 100px;
+            left: 60px;
+            transform: translateZ(0);
+            animation: cardThrow 2s forwards;
+            animation-play-state: paused;
+        }
+
+        /* Keyframes for the arm throwing motion */
+        @keyframes throw {
+            0%, 100% {
+                transform: rotate(0);
+            }
+            50% {
+                transform: rotate(90deg);
+            }
+        }
+
+        /* Keyframes for the card throwing motion */
+        @keyframes cardThrow {
+            0% {
+                transform: translateZ(0) scale(1) rotate(0);
+            }
+            50% {
+                transform: translate(150px, -200px) scale(2) rotate(360deg);
+            }
+            100% {
+                transform: translate(0, 0) scale(50) rotate(720deg);
+                opacity: 1;
+            }
+        }
+
+        /* Fullscreen card styles */
+        .fullscreen-card {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: red;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-size: 2rem;
+            z-index: 1000;
+        }
+
+        .fullscreen-card.show {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="scene">
+        <div class="greeting" id="greeting">Good Morning, Nishant</div>
+        <div class="boy">
+            <div class="head"></div>
+            <div class="body"></div>
+            <div class="arm"></div>
+            <div class="leg"></div>
+        </div>
+        <div class="card" id="card"></div>
+    </div>
+
+    <div class="fullscreen-card" id="fullscreenCard">
+        <div class="card-content">
+            <h1>Nishant</h1>
+        </div>
+    </div>
+
+    <script>
+        // Determine the current time and display the appropriate greeting
+        function getGreeting() {
+            const now = new Date();
+            const hours = now.getHours();
+            let greeting;
+
+            if (hours < 12) {
+                greeting = "Good Morning, Nishant";
+            } else if (hours < 18) {
+                greeting = "Good Afternoon, Nishant";
+            } else {
+                greeting = "Good Evening, Nishant";
+            }
+
+            return greeting;
+        }
+
+        document.getElementById('greeting').textContent = getGreeting();
+
+        // Trigger the animations after the greeting is displayed
+        setTimeout(() => {
+            document.querySelector('.arm').style.animationPlayState = 'running';
+            document.querySelector('.card').style.animationPlayState = 'running';
+        }, 2000);
+
+        // Show the fullscreen card after the animation ends
+        document.getElementById('card').addEventListener('animationend', function() {
+            document.getElementById('fullscreenCard').classList.add('show');
+        });
+    </script>
+</body>
+</html>
